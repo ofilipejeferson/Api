@@ -40,4 +40,11 @@ public class UserRestController {
                 .created(ServletUriComponentsBuilder.fromCurrentRequest()
                         .path("/{id}").buildAndExpand(userService.create(obj).getId()).toUri()).build();
     }
+
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<UserDto> update(@PathVariable Integer id, @RequestBody UserDto obj){
+        obj.setId(id);
+        User newObj = userService.update(obj);
+        return ResponseEntity.ok().body(mapper.map(newObj, UserDto.class));
+    }
 }
