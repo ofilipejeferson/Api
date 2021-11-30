@@ -21,7 +21,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 class UserServiceImplTest {
@@ -31,6 +31,7 @@ class UserServiceImplTest {
     public static final String EMAIL    = "filipe@outlook.com";
     public static final String PASSWORD = "teste123";
     public static final String OBJETO_NAO_ENCONTRADO = "Objeto não encontrado!";
+    public static final String E_MAIL_JA_CADASTRADO_NO_SISTEMA = "E-mail já cadastrado no sistema!";
 
 
     @InjectMocks
@@ -113,7 +114,7 @@ class UserServiceImplTest {
             userService.create(userDto);
         }catch (Exception ex){
             assertEquals(DataIntegratyViolationException.class, ex.getClass());
-            assertEquals("E-mail já cadastrado no sistema!", ex.getMessage());
+            assertEquals(E_MAIL_JA_CADASTRADO_NO_SISTEMA, ex.getMessage());
         }
     }
 
@@ -133,7 +134,25 @@ class UserServiceImplTest {
     }
 
     @Test
-    void delete() {
+    void whenUpdateThenReturnAnDataIntegrityViolationException() {
+        when(userRepository.findByEmail(anyString())).thenReturn(optionalUser);
+
+        try{
+            optionalUser.get().setId(2);
+            userService.update(userDto);
+        }catch (Exception ex){
+            assertEquals(DataIntegratyViolationException.class, ex.getClass());
+            assertEquals(E_MAIL_JA_CADASTRADO_NO_SISTEMA, ex.getMessage());
+        }
+    }
+
+    @Test
+    void whenDeleteWithSuccess() {
+        when(userRepository.findById(anyInt())).thenReturn(optionalUser);
+        doNothing().when(userRepository).deleteById(anyInt());
+        userService.delete(ID);
+        verify(userRepository, times(1)).deleteById(anyInt());
+
     }
 
 
