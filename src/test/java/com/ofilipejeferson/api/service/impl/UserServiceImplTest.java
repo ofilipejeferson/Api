@@ -3,7 +3,7 @@ package com.ofilipejeferson.api.service.impl;
 import com.ofilipejeferson.api.domain.User;
 import com.ofilipejeferson.api.domain.dto.UserDto;
 import com.ofilipejeferson.api.repositories.UserRepository;
-import com.ofilipejeferson.api.service.exceptions.DataIntegratyViolationException;
+import com.ofilipejeferson.api.service.exceptions.DataIntegrityViolationException;
 import com.ofilipejeferson.api.service.exceptions.ObjectNotFoundException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -113,7 +113,7 @@ class UserServiceImplTest {
             optionalUser.get().setId(2);
             userService.create(userDto);
         }catch (Exception ex){
-            assertEquals(DataIntegratyViolationException.class, ex.getClass());
+            assertEquals(DataIntegrityViolationException.class, ex.getClass());
             assertEquals(E_MAIL_JA_CADASTRADO_NO_SISTEMA, ex.getMessage());
         }
     }
@@ -141,7 +141,7 @@ class UserServiceImplTest {
             optionalUser.get().setId(2);
             userService.update(userDto);
         }catch (Exception ex){
-            assertEquals(DataIntegratyViolationException.class, ex.getClass());
+            assertEquals(DataIntegrityViolationException.class, ex.getClass());
             assertEquals(E_MAIL_JA_CADASTRADO_NO_SISTEMA, ex.getMessage());
         }
     }
