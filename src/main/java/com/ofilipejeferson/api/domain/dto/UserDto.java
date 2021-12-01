@@ -13,6 +13,7 @@ import javax.persistence.Id;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class UserDto {
 
     @Id
@@ -20,7 +21,6 @@ public class UserDto {
     private Integer id;
     private String name;
     private String email;
-
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 }
